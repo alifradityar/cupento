@@ -19,7 +19,7 @@ namespace GameStateManagementSample
 
         //public enum State : byte { Empty = 0, Need = 1, Filled = 2 };
         //private State[][] prob; // contains the Must-Filled columns
-        private int N_ROWS, N_COLS; // number of rows & columns
+        public int N_ROWS, N_COLS; // number of rows & columns
         Color inner, border;
         public int X, Y; // top-left coordinate of board, used for drawing
 
@@ -104,7 +104,10 @@ namespace GameStateManagementSample
         {
             return (need == 0);
         }
-
+        public bool IsPieceAvailable(int id)
+        {
+            return (piece_position[id] == 255) ? true : false;
+        }
         public bool GetNeedBitMask(int r, int c)
         {
             return (need & ((ulong)1 << (r * N_COLS + c))) > 0;

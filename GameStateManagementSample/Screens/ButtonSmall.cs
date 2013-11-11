@@ -46,14 +46,17 @@ namespace GameStateManagementSample
             }
         }
 
-        public void CheckForPressed(Vector2 touchPosition){
+        public bool CheckForPressed(Vector2 touchPosition)
+        {
             if ((touchPosition.X >= position.X && touchPosition.X <= position.X + width) && (touchPosition.Y >= position.Y && touchPosition.Y <= position.Y + height))
             {
                 isPressed = true;
+                return true;
             }
             else
             {
                 isPressed = false;
+                return false;
             }
         }
         protected virtual void onClick()
@@ -62,15 +65,16 @@ namespace GameStateManagementSample
                 Clicked(this, EventArgs.Empty);
         }
 
-        public void CheckForClicked(Vector2 touchPosition)
+        public bool CheckForClicked(Vector2 touchPosition)
         {
             if ((touchPosition.X >= position.X && touchPosition.X <= position.X + width) && (touchPosition.Y >= position.Y && touchPosition.Y <= position.Y + height))
             {
                 onClick();
+                return true;
             }
             else
             {
-                
+                return false;
             }
         }
 

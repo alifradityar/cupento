@@ -40,21 +40,21 @@ namespace GameStateManagementSample
                 background = content.Load<Texture2D>("background");
                 logo = content.Load<Texture2D>("logo");
 
-                ButtonSmall easyButton = new ButtonSmall(new Vector2(0, 200), "Easy", ButtonSmall.ALLIGNVERTICALCENTERED, content);
+                ButtonSmall easyButton = new ButtonSmall(new Vector2(0, 230), "Easy", ButtonSmall.ALLIGNVERTICALCENTERED, content);
                 easyButton.Clicked += easyButton_Clicked;
                 buttons.Add(easyButton);
 
-                ButtonSmall normalButton = new ButtonSmall(new Vector2(0, 260), "Normal", ButtonSmall.ALLIGNVERTICALCENTERED, content);
+                ButtonSmall normalButton = new ButtonSmall(new Vector2(0, 290), "Normal", ButtonSmall.ALLIGNVERTICALCENTERED, content);
                 normalButton.Clicked += normalButton_Clicked;
                 buttons.Add(normalButton);
 
-                ButtonSmall hardButton = new ButtonSmall(new Vector2(0, 320), "Hard", ButtonSmall.ALLIGNVERTICALCENTERED, content);
+                ButtonSmall hardButton = new ButtonSmall(new Vector2(0, 350), "Hard", ButtonSmall.ALLIGNVERTICALCENTERED, content);
                 hardButton.Clicked += hardButton_Clicked;
                 buttons.Add(hardButton);
 
-                ButtonSmall impossibleButton = new ButtonSmall(new Vector2(0, 380), "Impossible", ButtonSmall.ALLIGNVERTICALCENTERED, content);
-                impossibleButton.Clicked += impossibleButton_Clicked;
-                buttons.Add(impossibleButton);
+                //ButtonSmall impossibleButton = new ButtonSmall(new Vector2(0, 380), "Impossible", ButtonSmall.ALLIGNVERTICALCENTERED, content);
+                //impossibleButton.Clicked += impossibleButton_Clicked;
+                //buttons.Add(impossibleButton);
             }
         }
 
@@ -128,7 +128,7 @@ namespace GameStateManagementSample
             if (mode == MainMenu.MODEHUMAN)
                 LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new HumanGameplay(size, DIFFICULTYNORMAL));
             else
-                LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new SelectStrategy(size, DIFFICULTYEASY));
+                LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new SelectStrategy(size, DIFFICULTYNORMAL));
         }
 
         void hardButton_Clicked(object sender, EventArgs e)
@@ -136,15 +136,8 @@ namespace GameStateManagementSample
             if (mode == MainMenu.MODEHUMAN)
                 LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new HumanGameplay(size, DIFFICULTYHARD));
             else
-                LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new SelectStrategy(size, DIFFICULTYEASY));
+                LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new SelectStrategy(size, DIFFICULTYHARD));
         }
 
-        void impossibleButton_Clicked(object sender, EventArgs e)
-        {
-            if (mode == MainMenu.MODEHUMAN)
-                LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new HumanGameplay(size, DIFFICULTYIMPOSSIBLE));
-            else
-                LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new SelectStrategy(size, DIFFICULTYEASY));
-        }
     }
 }

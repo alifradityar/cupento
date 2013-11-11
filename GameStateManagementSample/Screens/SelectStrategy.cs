@@ -40,13 +40,13 @@ namespace GameStateManagementSample
                 background = content.Load<Texture2D>("background");
                 logo = content.Load<Texture2D>("logo");
 
-                ButtonSmall easyButton = new ButtonSmall(new Vector2(0, 240), "DFS", ButtonSmall.ALLIGNVERTICALCENTERED, content);
-                //easyButton.Clicked += easyButton_Clicked;
-                buttons.Add(easyButton);
+                ButtonSmall dfsButton = new ButtonSmall(new Vector2(0, 240), "DFS", ButtonSmall.ALLIGNVERTICALCENTERED, content);
+                dfsButton.Clicked += dfsButton_Clicked;
+                buttons.Add(dfsButton);
 
-                ButtonSmall normalButton = new ButtonSmall(new Vector2(0, 300), "BFS", ButtonSmall.ALLIGNVERTICALCENTERED, content);
+                ButtonSmall bfsButton = new ButtonSmall(new Vector2(0, 300), "BFS", ButtonSmall.ALLIGNVERTICALCENTERED, content);
                 //normalButton.Clicked += normalButton_Clicked;
-                buttons.Add(normalButton);
+                buttons.Add(bfsButton);
             }
         }
 
@@ -106,6 +106,10 @@ namespace GameStateManagementSample
             spriteBatch.End();
         }
 
+        void dfsButton_Clicked(object sender, EventArgs e)
+        {
+            LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new DFSGameplay(size,difficulty));
+        }
 
     }
 }

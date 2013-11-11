@@ -65,10 +65,6 @@ namespace GameStateManagementSample
                 ButtonIcon rightButton = new ButtonIcon(new Vector2(740, 380), "arrow_right", "arrow_right_1", content);
                 rightButton.Pressed += rightButton_Pressed;
                 buttons.Add(rightButton);
-                soundEffect = content.Load<SoundEffect>("POL-final-act-short");
-                SoundEffectInstance instance = soundEffect.CreateInstance();
-                instance.IsLooped = true;
-                instance.Play();
             }
         }
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
