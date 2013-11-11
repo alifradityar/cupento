@@ -120,27 +120,31 @@ namespace GameStateManagementSample
             if (mode == MainMenu.MODEHUMAN)
                 LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new HumanGameplay(size, DIFFICULTYEASY));
             else
-            {
                 LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new SelectStrategy(size, DIFFICULTYEASY));
-            }
         }
 
         void normalButton_Clicked(object sender, EventArgs e)
         {
             if (mode == MainMenu.MODEHUMAN)
                 LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new HumanGameplay(size, DIFFICULTYNORMAL));
+            else
+                LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new SelectStrategy(size, DIFFICULTYEASY));
         }
 
         void hardButton_Clicked(object sender, EventArgs e)
         {
             if (mode == MainMenu.MODEHUMAN)
                 LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new HumanGameplay(size, DIFFICULTYHARD));
+            else
+                LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new SelectStrategy(size, DIFFICULTYEASY));
         }
 
         void impossibleButton_Clicked(object sender, EventArgs e)
         {
             if (mode == MainMenu.MODEHUMAN)
                 LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new HumanGameplay(size, DIFFICULTYIMPOSSIBLE));
+            else
+                LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new SelectStrategy(size, DIFFICULTYEASY));
         }
     }
 }

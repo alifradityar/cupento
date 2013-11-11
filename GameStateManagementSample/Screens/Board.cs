@@ -85,20 +85,17 @@ namespace GameStateManagementSample
 
         public void Print()
         {
-            System.Console.WriteLine("Board : ");
+            Debug.WriteLine("Board : ");
             for (int i = 0; i < N_ROWS; ++i)
             {
+                string str = "";
                 for (int j = 0; j < N_COLS; ++j)
                 {
-                    System.Console.Write((GetNeedBitMask(i, j)) ? "1 " : "0 ");
+                    str = str + ((GetNeedBitMask(i, j)) ? "1 " : "0 ");
                 }
-                System.Console.WriteLine();
-            } 
-            System.Console.WriteLine("-------------------------");
-            System.Console.WriteLine("Position : ");
-            for (int i = 0; i < 12; ++i)
-                System.Console.Write(piece_position[i] + " ");
-            System.Console.WriteLine("-------------------------");
+                Debug.WriteLine(str);
+            }
+            Debug.WriteLine("-------------------------");
 
             //PrintPento();
         }
@@ -160,17 +157,19 @@ namespace GameStateManagementSample
                     int _j = j + c - shft;
                     temp++;
 
-                   System.Console.WriteLine("at " + _i + " and " + _j);
+                   //Debug.WriteLine("at " + _i + " and " + _j);
 
                     if (_i < 0 || _i >= N_ROWS || _j < 0 || _j >= N_COLS)
                     {
                         Debug.WriteLine("ERROR DI : " + i + ", " + j + "--" + _i + ", " + _j);
+                        Print();
                         return false;
                     }
 
                     if (!GetNeedBitMask(_i, _j))
                     {
                         Debug.WriteLine("-ERROR DI : " + i + ", " + j + "--" + _i + ", " + _j);
+                        Print();
                         return false;
                     }
                 }
@@ -189,8 +188,8 @@ namespace GameStateManagementSample
             int shft = 0;
 
             while (!piece.CheckBit(0, shft)) shft++;
-
-            //System.Console.WriteLine(shft);
+            Debug.WriteLine(r + " " + c);
+            Debug.WriteLine(shft);
 
             for (int i = 0; i < 5; ++i)
                 for (int j = 0; j < 5; ++j)
@@ -199,7 +198,8 @@ namespace GameStateManagementSample
 
                     int _i = i + r;
                     int _j = j + c - shft;
-
+                    Debug.WriteLine(i + " " + j);
+                    Debug.WriteLine("at " + _i + " and " + _j + " with value " + val);
                     if (_i < 0 || _i >= N_ROWS || _j < 0 || _j >= N_COLS)
                     {
                         //System.Console.WriteLine("at " + _i + " and " + _j);
@@ -228,8 +228,12 @@ namespace GameStateManagementSample
                 Piece piece = tuple.First;
                 int r = tuple.Second;
                 int c = tuple.Third;
+                Debug.WriteLine(r + " " + c);
                 if (piece.IsInside(position))
                 {
+                    int shft = 0;
+                    while (!piece.CheckBit(0, shft)) shft++;
+                    c += shft;
                     SetBoardState(piece, r, c, 1);
                     piece_position[piece.GetId()] = (byte)(r * N_COLS + c);
                     piece_config[piece.GetId()] = (byte)piece.GetIdConfig();
@@ -252,6 +256,7 @@ namespace GameStateManagementSample
 
             piece_position[piece.GetId()] = (byte)(r * N_COLS + c);
             piece_config[piece.GetId()] = (byte)piece.GetIdConfig();
+            Print();
         }
 
         public void putPiece(Piece piece)

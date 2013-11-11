@@ -220,10 +220,19 @@ namespace GameStateManagementSample
 
         public bool IsInside(Vector2 position)
         {
-            if ((position.X >= X && position.X <= X + 40 * 5) && (position.Y >= Y && position.Y <= Y + 40 * 5))
-                return true;
-            else
-                return false;
+            int[][] config = GetGridConfig();
+            for (int i = 0; i < config.Length; i++)
+            {
+                for (int j = 0; j < config[i].Length; j++)
+                {
+                    if (config[i][j] == 0) continue;
+                    int X1 = X + 38 * j;
+                    int Y1 = Y + 38 * j;
+                    if ((position.X >= X1 && position.X <= X1 + 40) && (position.Y >= Y1 && position.Y <= Y1 + 40))
+                        return true;
+                }
+            }
+            return false;
         }
 
     }
