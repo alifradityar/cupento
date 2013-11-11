@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="System.String">
+    <pentomino>
+1111111111
+1111110011
+1111000011
+1111000011
+1111111111
+1111111111
+</pentomino>
+  </Asset>
+</XnaContent>
