@@ -23,7 +23,7 @@ namespace GameStateManagementSample
 
         public Help()
         {
-            help_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ultricies risus quis lobortis molestie. Suspendisse sed tempor sapien, eget tempus libero. Sed quis bibendum leo, viverra lacinia diam. Nunc aliquet felis mauris. Phasellus cursus lectus sem, nec posuere sapien consequat quis. Quisque a eros eget ante tempor pulvinar sit amet vitae augue. Suspendisse at tincidunt nisi. Pellentesque varius quam eros, eget vulputate justo consequat vel. Sed nec dolor eu leo consequat aliquam a nec tellus. Aliquam vel arcu augue.";
+            help_text = "Human Mode : Drag pentomino ke dalam board sampai board terisi semua, dapatkan waktu tercepat!\n\rComputer Mode : Saksikan seberapa cepat komputer menyelesaikan board yang disediakan";
             developer_text = "Developed by : Alif Raditya Rochman, Dikra Prasetya, Muhammad Ikhsan";
         }
 
