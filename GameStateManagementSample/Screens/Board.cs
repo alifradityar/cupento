@@ -24,6 +24,76 @@ namespace GameStateManagementSample
         public int X, Y; // top-left coordinate of board, used for drawing
 
         //List<Tuple<Piece, int, int>> pieces_on_board;
+        ulong impossibru_check;
+
+        public int ImpossibruCount(int r, int c)
+        {
+            if (r < 0 || r >= N_ROWS || c < 0 || c >= N_COLS) return 0;
+            if (!GetNeedBitMask(r, c)) return 0;
+            if ((impossibru_check & ((ulong)1 << (r * N_COLS + c))) > 0) return 0;
+
+            impossibru_check |= ((ulong)1 << (r * N_COLS + c));
+            return 1 + ImpossibruCount(r + 1, c) + ImpossibruCount(r - 1, c) + ImpossibruCount(r, c + 1) + ImpossibruCount(r, c - 1);
+        }
+
+        public bool IsImpossibru()
+        {
+            impossibru_check = 0;
+
+            for (int i = 0; i < N_ROWS; ++i)
+                for (int j = 0; j < N_COLS; ++j)
+                {
+                    if ((impossibru_check & ((ulong)1 << (i * N_COLS + j))) > 0) continue;
+                    if (!GetNeedBitMask(i, j)) continue;
+                    int temp = ImpossibruCount(i, j);
+
+                    if (temp < 5 || (temp % 5 != 0)) return true;
+                }
+
+            return false;
+        }
+
+        public Vector2 GetCurrentRowCol()
+        {
+
+            for (int i = 0; i < N_ROWS; ++i)
+                for (int j = 0; j < N_COLS; ++j)
+                {
+                    if (GetNeedBitMask(i, j))
+                    {
+                        return new Vector2(i, j);
+                    }
+                }
+
+            return new Vector2(-1,-1);
+        }
+
+        public Board(Board board)
+        {
+            X = board.X;
+            Y = board.Y;
+            N_ROWS = board.N_ROWS;
+            N_COLS = board.N_COLS;
+            need = board.need;
+            empty = board.empty;
+            inner = new Color(136, 159, 172);
+            border = new Color(230, 231, 232);
+            piece_position = new byte[12];
+            for (int i = 0; i < 12; ++i) piece_position[i] = board.piece_position[i];
+
+            piece_config = new byte[12];
+            for (int i = 0; i < 12; ++i) piece_config[i] = board.piece_config[i];
+
+            /*
+            a = new int[N_ROWS][];
+            for (int i = 0; i < N_ROWS; ++i)
+            {
+                a[i] = new int[N_COLS];
+                for (int j = 0; j < N_COLS; ++j)
+                    a[i][j] = board.a[i][j];
+            }
+             */
+        }
 
         public Board(int row,int col)
         {

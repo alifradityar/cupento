@@ -24,7 +24,7 @@ namespace GameStateManagementSample
         double timer;
         SpriteFont titleFont, timeFont;
         int focus_piece = -1;
-        bool flag = false;
+        bool flag = false, flag2 = true;
         List<Piece> pieces = new List<Piece>();
 
         List<ButtonIcon> buttons = new List<ButtonIcon>();
@@ -65,25 +65,26 @@ namespace GameStateManagementSample
                 ButtonIcon rightButton = new ButtonIcon(new Vector2(740, 380), "arrow_right", "arrow_right_1", content);
                 rightButton.Pressed += rightButton_Pressed;
                 buttons.Add(rightButton);
+                soundEffect = content.Load < SoundEffect>("POL-final-act-short");
             }
         }
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
             if (IsActive)
             {
-                if (flag)
+                if (flag2)
                 {
                     SoundEffectInstance instance = soundEffect.CreateInstance();
                     instance.IsLooped = true;
                     instance.Play();
-                    flag = false;
+                    flag2 = false;
 
                 }
                 timer += gameTime.ElapsedGameTime.TotalSeconds;
             }
             else
             {
-                flag = true;
+                flag2 = true;
             }
             
         }

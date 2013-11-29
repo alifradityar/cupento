@@ -56,6 +56,7 @@
     <Compile Include="Screens\Board.cs" />
     <Compile Include="Screens\Button.cs" />
     <Compile Include="Screens\ButtonSmall.cs" />
+    <Compile Include="Screens\BFSGameplay.cs" />
     <Compile Include="Screens\DFS.cs" />
     <Compile Include="Screens\DFSGameplay.cs" />
     <Compile Include="Screens\GameOver.cs" />

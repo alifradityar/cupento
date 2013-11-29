@@ -14,7 +14,7 @@ using System.Threading;
 
 namespace GameStateManagementSample
 {
-    class DFSGameplay : GameScreen
+    class BFSGameplay : GameScreen
     {
         ContentManager content;
         Board finalBoard = null;
@@ -22,89 +22,87 @@ namespace GameStateManagementSample
         Texture2D background, clock_icon;
         SoundEffect soundEffect;
         int size, difficulty;
-        double timer,timer_for_animation;
+        double timer,timer2 = 0;
         SpriteFont titleFont, timeFont;
         int focus_piece = -1;
-        bool flag = false;
+        bool flag = false, flag3 = false;
         bool wait = true;
-        double delay = 0.5;
+        double delay = 5;
 
         List<ButtonSmall> buttons = new List<ButtonSmall>();
 
         public void SolveRec()
         {
-            bool bol = SolveRec(0, 0);
+            bool bol = Solve();
         }
 
-        public bool SolveRec(int r, int c)
+        public bool Solve()
         {
-            //System.Console.WriteLine(r + " " + c);
-            //board.Print();
-            if (delay > 0)
+            Board problem = board;
+            //timer.Start();
+            queue.Enqueue(problem);
+
+            System.Console.WriteLine("Solving starts now!");
+
+
+            while (queue.Count > 0)
             {
-                wait = true;
-                while (wait)
+                board = queue.Dequeue();
+
+                //System.Console.WriteLine("row = " + r + ", col = " + c + ", mask = " + mask);
+
+                Vector2 pos = board.GetCurrentRowCol();
+                int r = (int)pos.X, c = (int)pos.Y;
+
+                for (int id_piece = 0; id_piece < 12; ++id_piece) // try every available pentomino pieces 
                 {
-                    // Wait
-                }
-            }
-            if (finalBoard != null)
-                return true;
+                    if (!board.IsPieceAvailable(id_piece)) continue;
 
-            if (board.IsComplete())
-            {
-                finalBoard = board;
-                return true;
-            }
-            
-            if (board.IsImpossibru())
-            {
-                return false;
-            }
 
-            if (c >= board.N_COLS)
-            {
-                return SolveRec(r + 1, 0);
-            }
+                    List<Piece> p_list = PieceHelper.GetAllPieceConfig(id_piece);
 
-            if (!board.GetNeedBitMask(r, c))
-            {
-                return SolveRec(r, c + 1);
-            }
-
-            //board.Print();
-
-            for (int id_piece = 0; id_piece < 12; ++id_piece) // try every available pentomino pieces 
-            {
-                if (!board.IsPieceAvailable(id_piece)) continue;
-
-                List<Piece> p_list = PieceHelper.GetAllPieceConfig(id_piece);
-
-                foreach (Piece piece in p_list)
-                {
-                    if (board.IsCanPut(piece, r, c))
+                    foreach (Piece piece in p_list)
                     {
-                        board.PutPiece(piece, r, c);
+                        if (board.IsCanPut(piece, r, c))
+                        {
+                            Board _board = new Board(board);
+                            _board.PutPiece(piece, r, c);
 
-                        bool flag = SolveRec(r, c + 1);
+                            if (_board.IsImpossibru())
+                                continue;
 
-                        if (flag) return true;
+                            // _board.Print();
+                            //System.Console.ReadKey();
 
-                        board.DeletePiece(piece, r, c);
+                            if (_board.IsComplete()) // if all pieces have been put, then we found the solution
+                            {
+                                finalBoard = _board;
+                                board = finalBoard;
+
+                                //timer.Stop();
+
+                                return true;
+                            }
+
+                            queue.Enqueue(_board);
+                        }
                     }
                 }
             }
-
+            queue.Clear();
+            
             return false;
         }
 
         Thread thread;
-        public DFSGameplay(int size, int difficulty)
+        private Queue<Board> queue;
+        public BFSGameplay(int size, int difficulty)
         {
             this.size = size;
             this.difficulty = difficulty;
 
             EnabledGestures = GestureType.Tap;
+            queue = new Queue<Board>();
             board = new Board(difficulty * 4 + size);
             thread = new Thread(SolveRec);
             thread.Start();
@@ -121,17 +119,6 @@ namespace GameStateManagementSample
                 titleFont = content.Load<SpriteFont>("titleFont");
                 timeFont = content.Load<SpriteFont>("timeFont");
                 soundEffect = content.Load<SoundEffect>("POL-final-act-short");
-                ButtonSmall slowButton = new ButtonSmall(new Vector2(5, 365), "Slow", ButtonSmall.ALLIGNNORMAL, content);
-                slowButton.Clicked += slowButton_Clicked;
-                buttons.Add(slowButton);
-
-                ButtonSmall normalButton = new ButtonSmall(new Vector2(5 + 260 + 5, 365), "Normal", ButtonSmall.ALLIGNNORMAL, content);
-                normalButton.Clicked += normalButton_Clicked;
-                buttons.Add(normalButton);
-
-                ButtonSmall fastButton = new ButtonSmall(new Vector2(2 + 260 + 5 + 260 + 5, 365), "Fast", ButtonSmall.ALLIGNNORMAL, content);
-                fastButton.Clicked += fastButton_Clicked;
-                buttons.Add(fastButton);
             }
         }
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -147,19 +134,17 @@ namespace GameStateManagementSample
 
                 }
                 timer += gameTime.ElapsedGameTime.TotalSeconds;
-                if (wait)
-                {
-                    timer_for_animation += gameTime.ElapsedGameTime.TotalSeconds;
-                    if (timer_for_animation >= delay)
-                    {
-                        timer_for_animation = 0;
-                        wait = false;
-                    }
-                }
                 if (board.IsComplete())
                 {
+                    flag3 = true;
                     thread.Join();
-                    End();
+                    //End();
+                }
+                if (flag3)
+                {
+                    timer2 += gameTime.ElapsedGameTime.TotalSeconds;
+                    if (timer2 > delay)
+                        End();
                 }
             }
             else
@@ -263,20 +248,6 @@ namespace GameStateManagementSample
             LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new GameOver((int)timer));
         }
 
-        void slowButton_Clicked(object sender, EventArgs e)
-        {
-            delay = 0.1;
-        }
-
-        void normalButton_Clicked(object sender, EventArgs e)
-        {
-            delay = 0.03;
-        }
-
-        void fastButton_Clicked(object sender, EventArgs e)
-        {
-            delay = 0;
-        }
 
     }
 }

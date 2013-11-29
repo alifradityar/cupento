@@ -45,7 +45,7 @@ namespace GameStateManagementSample
                 buttons.Add(dfsButton);
 
                 ButtonSmall bfsButton = new ButtonSmall(new Vector2(0, 300), "BFS", ButtonSmall.ALLIGNVERTICALCENTERED, content);
-                //normalButton.Clicked += normalButton_Clicked;
+                bfsButton.Clicked += bfsButton_Clicked;
                 buttons.Add(bfsButton);
             }
         }
@@ -111,5 +111,9 @@ namespace GameStateManagementSample
             LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new DFSGameplay(size,difficulty));
         }
 
+        void bfsButton_Clicked(object sender, EventArgs e)
+        {
+            LoadingScreen.Load(ScreenManager, false, PlayerIndex.One, new BFSGameplay(size, difficulty));
+        }
     }
 }
